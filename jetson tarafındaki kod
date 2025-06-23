@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+import serial
+import time
+
+# Arduino'nun bağlı olduğu seri port (Jetson'da /dev/ttyUSB0 olabilir)
+arduino_port = '/dev/ttyUSB0'
+baud_rate = 115200 # Arduino ile haberleşme hızı
+
+# Seri portu aç
+ser = serial.Serial(arduino_port, baud_rate, timeout=1)
+
+# Birkaç saniye bekle (Arduino'nun açılmasını beklemek için)
+time.sleep(2)
+
+# "ARM" komutunu gönder
+def arm_motors():
+ser.write(b"ARM\n") # Arduino'ya ARM komutunu gönder
+
+# Uçuş modunu değiştirme komutu
+def set_mode(mode):
+ser.write(f"MODE:{mode}\n".encode()) # Örneğin "MODE:0" komutunu gönder
+
+# Motorları ARM et
+arm_motors()
+
+# Uçuş modunu değiştirme (örneğin, "MODE:1" komutunu gönder)
+set_mode(1)
+
+# Seri portu kapat
+ser.close()
+
+
+
+
